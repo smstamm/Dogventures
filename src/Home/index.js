@@ -5,28 +5,76 @@ Home index.js
 */
 
 import React, { Component } from 'react';
-// import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { InputAdornment, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
 import styles from './index.module.css';
 
+const muiStyles = () => ({
+  cssFocused: {},
+  cssLabel: {
+    '&$cssFocused': {
+      color: '#FFF',
+    },
+    borderWidth: '0px'
+  },
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: '#FFF',
+    },
+    borderWidth: '0px'
+  },
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: '#FFF',
+    },
+  },
+  notchedOutline: {}
+});
+
 class Home extends Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired
+  };
+
+  state = {
+    location: ''
+  };
+
+  locationInputHandle = name => event => { // eslint-disable-line
+    this.setState({ location: event.target.value });
+  }
+
   render() {
+    const { classes } = this.props;
     return (
       <div className={styles.homeContainer}>
         <h1 className={styles.headline}>Find the perfect companion for your every adventure</h1>
-        <div className={styles.textbox}>
+        <div className={styles.textboxContainer}>
           <TextField
             autoFocus
+            className={styles.textbox}
+            InputLabelProps={{
+              classes: {
+                root: classes.cssLabel,
+                focused: classes.cssFocused,
+              },
+            }}
             InputProps={{
-              startAdornment: (
+              classes: {
+                root: classes.cssOutlinedInput,
+                focused: classes.cssFocused,
+                notchedOutline: classes.notchedOutline,
+              },
+              startAdornment:
                 <InputAdornment position='start'>
                   <Search />
                 </InputAdornment>
-              ),
             }}
             label='Find a co-pilot near you'
-            name='Find a co-pilot near you'
+            onChange={this.locationInputHandle('name')}
+            value={this.state.location}
             variant='outlined'
           />
         </div>
@@ -35,4 +83,4 @@ class Home extends Component {
   }
 }
   
-export default Home;
+export default withStyles(muiStyles)(Home);

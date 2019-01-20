@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "3.7.1",
     "@material-ui/icons": "3.0.1",
+    "@reach/router": "1.2.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
     "jest-enzyme": "7.0.0",

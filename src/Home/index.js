@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { InputAdornment, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import styles from './index.module.css';
+import styles from './index.css';
 
 const muiStyles = () => ({
   cssFocused: {},
@@ -42,16 +42,14 @@ class Home extends Component {
     location: ''
   };
 
-  locationInputHandle = name => event => { // eslint-disable-line
-    this.setState({ location: event.target.value });
-  }
-
   render() {
     const { classes } = this.props;
     return (
-      <div className={styles.homeContainer}>
-        <h1 className={styles.headline}>Find the perfect companion for your every adventure</h1>
-        <div className={styles.textboxContainer}>
+      <div className='homeContainer'>
+        <div className='headlineContainer'>
+          <h1 className='headline'>Find the perfect companion for your every adventure</h1>
+        </div>
+        <div className='textboxContainer'>
           <TextField
             autoFocus
             className={styles.textbox}

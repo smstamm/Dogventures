@@ -42,6 +42,10 @@ class Home extends Component {
     location: ''
   };
 
+  locationInputHandle = name => event => { // eslint-disable-line
+    this.setState({ location: event.target.value });
+  }
+
   render() {
     const { classes } = this.props;
     return (

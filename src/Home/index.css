@@ -15,6 +15,11 @@ Home styles.css
   width: 60%;
 }
 
+.buttonContainer {
+  position: relative;
+  margin: 50px 0px 0px 8px;
+}
+
 .headline {
   width: 100%;
   color: white;
@@ -31,6 +36,11 @@ Home styles.css
 }
 
 @media screen and (max-width: 600px) {
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+  }
+  
   .headlineContainer {
     width: 100%;
   }

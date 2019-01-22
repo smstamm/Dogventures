@@ -5,6 +5,7 @@ Home index.js
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Search } from '@material-ui/icons';
@@ -15,11 +16,8 @@ import {
   InputAdornment,
   TextField,
 } from '@material-ui/core';
-import fetchJsonp from 'fetch-jsonp';
-import {
-  apiKey,
-  apiSecret
-} from '../apiConstants.js';
+import { petsFetch } from '../actions.js';
+
 
 import './index.css';
 
@@ -48,7 +46,8 @@ const muiStyles = () => ({
 class Home extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
+    petsFetch: PropTypes.func.isRequired
   };
 
   state = {
@@ -61,14 +60,8 @@ class Home extends Component {
   }
 
   petsFetch = () => {
-    const url = `http://api.petfinder.com/pet.find?key=${apiKey}&format=json&count=90&animal=dog&location=${this.state.zip}`;
-    
-    fetchJsonp(url, { headers: { 'Authorization': apiSecret } })
-      .then(res => {
-        return res.json();
-      })
-      .then(res => {
-        console.log(res.petfinder.pets);
+    this.props.petsFetch(this.state.zip)
+      .then(() => {
         this.props.navigate(`search/${this.state.zip}`);
       });
   }
@@ -80,7 +73,7 @@ class Home extends Component {
     });
   }
 
-  zipValidate = nextStep => {
+  zipValidate = () => {
     const errors = [];
     if (!this.state.zip.match(/^\b\d{5}(-\d{4})?\b$/)) {
       errors.push({
@@ -89,7 +82,7 @@ class Home extends Component {
       });
     }
     this.setState({ errors });
-    errors.length === 0 && nextStep();
+    errors.length === 0 && this.petsFetch();
   }
 
   render() {
@@ -103,7 +96,7 @@ class Home extends Component {
           <h1 className='headline'>Find the perfect companion for your every adventure</h1>
         </div>
         <FormControl error={Boolean(zipError)}>
-          <form className='buttonContainer' onSubmit={event => { event.preventDefault(); this.zipValidate(this.petsFetch); }}>
+          <form className='buttonContainer' onSubmit={event => { event.preventDefault(); this.zipValidate(); }}>
             <TextField
               autoFocus
               error={Boolean(errors)}
@@ -130,7 +123,7 @@ class Home extends Component {
               variant='outlined'
             />
             <Button
-              onClick={() => this.zipValidate(this.petsFetch)}
+              onClick={() => this.zipValidate()}
               variant='contained'
             >
               Find your co-pilot
@@ -143,4 +136,8 @@ class Home extends Component {
   }
 }
 
-export default withStyles(muiStyles)(Home);
+const mapDispatchToProps = dispatch => ({
+  petsFetch: zip => dispatch(petsFetch(zip))
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(muiStyles)(Home));

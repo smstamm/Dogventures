@@ -2,17 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
-import rootReducer from './rootReducer';
+import rootReducer from './redux/rootReducer';
 import AppRoot from './AppRoot';
 import * as serviceWorker from './serviceWorker';
 import promiseMiddleware from 'redux-promise-middleware';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
+import { loadState, saveState } from './utils/storeHelpers';
+import { throttle } from 'lodash';
 import './index.css';
 
+const persistedState = loadState();
+
 const store = process.env.NODE_ENV === 'development' ?
-  createStore(rootReducer, composeWithDevTools(applyMiddleware(promiseMiddleware()))) :
-  createStore(rootReducer, applyMiddleware(promiseMiddleware()));
+  createStore(rootReducer, persistedState, composeWithDevTools(applyMiddleware(promiseMiddleware()))) :
+  createStore(rootReducer, persistedState, applyMiddleware(promiseMiddleware()));
+
+store.subscribe(throttle(() => {
+  saveState(store.getState({ pets: store.getState().PetsReducer.pets }));
+}, 1000));
 
 ReactDOM.render(
   <Provider store={store}>

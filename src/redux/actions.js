@@ -2,7 +2,7 @@ import fetchJsonp from 'fetch-jsonp';
 import {
   apiKey,
   apiSecret
-} from './apiConstants.js';
+} from '../utils/apiConstants.js';
 import { FETCH_PETS } from './constants.js';
 
 export const petsFetch = zip => {

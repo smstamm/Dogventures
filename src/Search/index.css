@@ -1,0 +1,52 @@
+/*
+*
+Search styles.css
+*
+*/
+.gridList {
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  grid-template-areas: 'tile tile tile tile';
+  justify-content: center;
+}
+
+.gridTile {
+  grid-area: 'tile';
+  position: relative;
+  height: 200px;
+  width: 300px;
+  border: 3px solid white;
+}
+
+img {
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  display: block;
+  background-color: white;
+  width: 100%;
+  opacity: .75;
+  overflow: hidden;
+  bottom: 0px;
+}
+
+h4 {
+  margin: 0px;
+  text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .gridList {
+    grid-template-columns: repeat(2, 300px);
+    grid-template-areas: 'tile tile';
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .gridList {
+    grid-template-columns: 300px;
+    grid-template-areas: 'tile';
+  }
+}

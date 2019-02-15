@@ -2,6 +2,7 @@ import {
   FETCH_PETS_FULFILLED,
   FETCH_PETS_REJECTED
 } from './constants.js';
+import { startCase } from 'lodash';
 
 const initialState = {
   pets: [],
@@ -24,8 +25,8 @@ const PetsReducer = (state = initialState, action) => {
         },
         description: pet.description.$t,
         id: pet.id.$t,
-        photos: pet.media.photos.photo.filter(photo => photo['@size'] === ('x' || 'pn')).map(photo => (photo.$t)),
-        name: pet.name.$t,
+        photos: pet.media.photos.photo && pet.media.photos.photo.filter(photo => photo['@size'] === 'pn').map(photo => (photo.$t)),
+        name: startCase(pet.name.$t.toLowerCase()),
         sex: pet.sex.$t,
         size: pet.size.$t,
       }));

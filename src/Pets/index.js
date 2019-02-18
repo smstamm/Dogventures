@@ -1,6 +1,6 @@
 /*
 *
-Search index.js
+Pets index.js
 *
 */
 
@@ -15,7 +15,7 @@ const select = (state) => ({
   pets: state.PetsReducer.pets,
 });
 
-class Search extends Component {
+class Pets extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     pets: PropTypes.array.isRequired,
@@ -43,4 +43,4 @@ class Search extends Component {
   }
 }
   
-export default connect(select, { petsFetch })(Search);
+export default connect(select, { petsFetch })(Pets);

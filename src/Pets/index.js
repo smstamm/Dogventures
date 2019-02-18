@@ -7,17 +7,37 @@ Pets index.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import { petsFetch } from '../redux/actions.js';
-
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography
+} from '@material-ui/core';
 import './index.css';
 
 const select = (state) => ({
   pets: state.PetsReducer.pets,
 });
 
+const styles = {
+  card: {
+    maxWidth: 300,
+  },
+  media: {
+    objectFit: 'none',
+    objectPosition: '50% 5%'
+  }
+};
+
 class Pets extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    navigate: PropTypes.func.isRequired,
     pets: PropTypes.array.isRequired,
     petsFetch: PropTypes.func.isRequired,
     zip: PropTypes.string.isRequired
@@ -29,18 +49,47 @@ class Pets extends Component {
     }
   }
 
+  petDetailsGet = petId => {
+    this.props.navigate(`/pets/${petId}`);
+  }
+
   render() {
     return (
       <div className='gridList'>
         {this.props.pets.map(pet =>
-          <div key={pet.id} className='gridTile'>
-            <img src={pet.photos[0]} alt={`${pet.name}`} />
-            <div className='caption'><h4>{pet.name}</h4></div>
-          </div>
+          <Card key={pet.id}>
+            <CardActionArea>
+              {pet.photos.length > 0 ?
+                <CardMedia
+                  alt={pet.name}
+                  className={this.props.classes.media}
+                  component='img'
+                  image={pet.photos[0]}
+                  style={{ height: 200, width: 300 }}
+                  title={pet.name}
+                />
+                :
+                <div>{pet.name}</div>
+              }
+            </CardActionArea>
+            <CardContent>
+              <Typography gutterBottom variant='h5' component='h2'>{pet.name}</Typography>
+              <Typography component='p' className='description'>{pet.description}</Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color='primary'
+                onClick={() => this.petDetailsGet(pet.id)}
+                size='small'
+              >
+                Learn More
+              </Button>
+            </CardActions>
+          </Card>
         )}
       </div>
     );
   }
 }
   
-export default connect(select, { petsFetch })(Pets);
+export default connect(select, { petsFetch })(withStyles(styles)(Pets));

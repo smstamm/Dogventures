@@ -8,33 +8,14 @@ Pets styles.css
   grid-template-columns: repeat(4, 300px);
   grid-template-areas: 'tile tile tile tile';
   justify-content: center;
+  grid-gap: 8px;
 }
 
-.gridTile {
-  grid-area: 'tile';
-  position: relative;
-  height: 200px;
-  width: 300px;
-  border: 3px solid white;
-}
-
-img {
-  object-fit: cover;
-}
-
-.caption {
-  position: absolute;
-  display: block;
-  background-color: white;
-  width: 100%;
-  opacity: .75;
+.description {
+  max-width: 300ch;
   overflow: hidden;
-  bottom: 0px;
-}
-
-h4 {
-  margin: 0px;
-  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 1200px) {

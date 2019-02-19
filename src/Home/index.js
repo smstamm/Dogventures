@@ -16,8 +16,7 @@ import {
   InputAdornment,
   TextField,
 } from '@material-ui/core';
-import { petsFetch } from '../actions.js';
-
+import { petsFetch } from '../redux/actions.js';
 
 import './index.css';
 
@@ -46,7 +45,7 @@ const muiStyles = () => ({
 class Home extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    navigate: PropTypes.func,
+    navigate: PropTypes.func.isRequired,
     petsFetch: PropTypes.func.isRequired
   };
 
@@ -60,10 +59,12 @@ class Home extends Component {
   }
 
   petsFetch = () => {
-    this.props.petsFetch(this.state.zip)
-      .then(() => {
-        this.props.navigate(`search/${this.state.zip}`);
-      });
+    if (this.zipValidate()) {
+      this.props.petsFetch(this.state.zip)
+        .then(() => {
+          this.props.navigate(`pets/zipcodes/${this.state.zip}`);
+        });
+    }
   }
 
   zipInputHandle = event => {
@@ -82,7 +83,7 @@ class Home extends Component {
       });
     }
     this.setState({ errors });
-    errors.length === 0 && this.petsFetch();
+    return errors.length === 0;
   }
 
   render() {
@@ -96,7 +97,7 @@ class Home extends Component {
           <h1 className='headline'>Find the perfect companion for your every adventure</h1>
         </div>
         <FormControl error={Boolean(zipError)}>
-          <form className='buttonContainer' onSubmit={event => { event.preventDefault(); this.zipValidate(); }}>
+          <form className='buttonContainer' onSubmit={event => { event.preventDefault(); this.petsFetch(); }}>
             <TextField
               autoFocus
               error={Boolean(errors)}
@@ -136,8 +137,4 @@ class Home extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  petsFetch: zip => dispatch(petsFetch(zip))
-});
-
-export default connect(null, mapDispatchToProps)(withStyles(muiStyles)(Home));
+export default connect(null, { petsFetch })(withStyles(muiStyles)(Home));

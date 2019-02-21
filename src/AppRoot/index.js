@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import About from '../About';
 import Home from '../Home';
-import Search from '../Search';
+import Pets from '../Pets';
+import PetDetail from '../PetDetail';
 import { Router } from '@reach/router';
-
-import './index.css';
 
 class AppRoot extends Component {
   render() {
@@ -12,8 +11,9 @@ class AppRoot extends Component {
       <div className='AppRoot'>
         <Router>
           <Home path='/' />
-          <About path='about' />
-          <Search path='search/:zip' />
+          <About path='/about' />
+          <Pets path='/pets/zips/:zip' />
+          <PetDetail path='/pets/:petId' />
         </Router>
       </div>
     );

@@ -1,0 +1,105 @@
+/*
+*
+PetDetail index.js
+*
+*/
+
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { petDetailFetch } from '../redux/actions.js';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia
+} from '@material-ui/core';
+
+const select = (state) => ({
+  pet: state.PetsReducer.petDetail
+});
+
+const styles = {
+  card: {
+    maxWidth: 300,
+  },
+  media: {
+    objectFit: 'none',
+    objectPosition: '50% 50%'
+  }
+};
+
+class PetDetail extends Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+    pet: PropTypes.object.isRequired,
+    petId: PropTypes.string.isRequired,
+    petDetailFetch: PropTypes.func.isRequired,
+  };
+
+  componentDidMount() {
+    this.props.petDetailFetch(this.props.petId);
+  }
+
+  render() {
+    const { pet } = this.props;
+
+    if (Object.keys(this.props.pet).length > 1) {
+      return (
+        <div>
+          <Card>
+            {pet.photos.length > 0 ?
+              <CardMedia
+                alt={pet.name}
+                className={this.props.classes.media}
+                component='img'
+                image={pet.photos[0]}
+                style={{ height: 300 }}
+                title={pet.name}
+              />
+              :
+              <div>{pet.name}</div>
+            }
+            <CardContent>
+              {pet.description}
+            </CardContent>
+            <CardActions>
+              <a
+                href={`mailto:?subject=Check out ${pet.name}&body=Read all about ${pet.name} at ${window.location.href}`}
+                rel='noopener noreferrer'
+                style={{ textDecoration: 'none' }}
+                target='_blank'
+              >
+                <Button size='small' color='primary'>
+                  Share
+                </Button>
+              </a>
+              <a
+                href={`mailto:${pet.contact.email}?subject=Adoption of ${pet.name}`}
+                rel='noopener noreferrer'
+                style={{ textDecoration: 'none' }}
+                target='_blank'
+              >
+                <Button
+                  color='primary'
+                  size='small'
+                >
+                  Contact Shelter
+                </Button>
+              </a>
+              
+            </CardActions>
+  
+          </Card>
+        </div>
+      );
+    }
+    else {
+      return (<div>doggo details here</div>);
+    }
+  }
+}
+
+export default connect(select, { petDetailFetch })(withStyles(styles)(PetDetail));

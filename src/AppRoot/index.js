@@ -12,7 +12,7 @@ class AppRoot extends Component {
         <Router>
           <Home path='/' />
           <About path='/about' />
-          <Pets path='/pets/zips/:zip' />
+          <Pets path='/pets/zipcodes/:zip' />
           <PetDetail path='/pets/:petId' />
         </Router>
       </div>

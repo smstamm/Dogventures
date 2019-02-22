@@ -16,7 +16,7 @@ const PetsReducer = (state = initialState, action) => {
   const newState = state;
   switch (action.type) {
     case FETCH_PETS_FULFILLED: {
-      newState.pets = action.payload.petfinder.pets.pet.map((pet) => ({
+      newState.pets = action.payload.petfinder.pets.pet.map(pet => ({
         age: pet.age.$t,
         breeds: pet.breeds.breed.length > 1 ? pet.breeds.breed.map(breed => breed.$t) : pet.breeds.breed.$t,
         contact: {
@@ -28,7 +28,7 @@ const PetsReducer = (state = initialState, action) => {
         },
         description: pet.description.$t,
         id: pet.id.$t,
-        photos: pet.media.photos.photo && pet.media.photos.photo.filter(photo => photo['@size'] === 'pn').map(photo => (photo.$t)),
+        photos: pet.media.hasOwnProperty('photos') ? pet.media.photos.photo.filter(photo => photo['@size'] === 'pn').map(photo => (photo.$t)) : [],
         name: startCase(pet.name.$t.toLowerCase()),
         sex: pet.sex.$t,
         size: pet.size.$t,
@@ -54,7 +54,7 @@ const PetsReducer = (state = initialState, action) => {
         },
         description: pet.description.$t,
         id: pet.id.$t,
-        photos: pet.media.photos.photo && pet.media.photos.photo.filter(photo => photo['@size'] === 'pn').map(photo => (photo.$t)),
+        photos: pet.hasOwnProperty('media') ? pet.media.photos.photo.filter(photo => photo['@size'] === 'pn').map(photo => (photo.$t)) : [],
         name: startCase(pet.name.$t.toLowerCase()),
         sex: pet.sex.$t,
         size: pet.size.$t,

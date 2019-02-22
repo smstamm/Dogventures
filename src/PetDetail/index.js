@@ -17,9 +17,17 @@ import {
   CardMedia
 } from '@material-ui/core';
 
-const select = (state) => ({
-  pet: state.PetsReducer.petDetail
-});
+const select = (state, props) => {
+  if (state.PetsReducer.pets.length > 0 && state.PetsReducer.pets.some(pet => pet.id === props.petId)) {
+    return { pet: state.PetsReducer.pets.find(pet => pet.id === props.petId) };
+  }
+  else if (state.PetsReducer.petDetail.id === props.petId) {
+    return {pet: state.PetsReducer.petDetail};
+  }
+  else {
+    return { pet: {} };
+  }
+};
 
 const styles = {
   card: {
@@ -40,12 +48,13 @@ class PetDetail extends Component {
   };
 
   componentDidMount() {
-    this.props.petDetailFetch(this.props.petId);
+    if (Object.keys(this.props.pet).length === 0) {
+      this.props.petDetailFetch(this.props.petId);
+    }
   }
 
   render() {
     const { pet } = this.props;
-
     if (Object.keys(this.props.pet).length > 1) {
       return (
         <div>

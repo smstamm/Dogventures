@@ -106,7 +106,7 @@ class PetDetail extends Component {
       );
     }
     else {
-      return <div>Doggos go here</div>;
+      return (<div>doggo details here</div>);
     }
   }
 }

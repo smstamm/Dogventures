@@ -4,7 +4,7 @@ import {
   FETCH_PETS_FULFILLED,
   FETCH_PETS_REJECTED
 } from './constants.js';
-import { startCase } from 'lodash';
+import { cloneDeep, startCase } from 'lodash';
 
 const initialState = {
   petDetail: {},
@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const PetsReducer = (state = initialState, action) => {
-  const newState = state;
+  const newState = cloneDeep(state);
   switch (action.type) {
     case FETCH_PETS_FULFILLED: {
       newState.pets = action.payload.petfinder.pets.pet.map(pet => ({
@@ -59,7 +59,6 @@ const PetsReducer = (state = initialState, action) => {
         sex: pet.sex.$t,
         size: pet.size.$t,
       };
-
       return newState;
     }
     case FETCH_PET_DETAIL_REJECTED: {

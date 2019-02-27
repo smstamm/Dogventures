@@ -9,6 +9,8 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { loadState, saveState } from './utils/storeHelpers';
 import { throttle } from 'lodash';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import './index.css';
 
 const persistedState = loadState();
@@ -18,12 +20,17 @@ const store = process.env.NODE_ENV === 'development' ?
   createStore(rootReducer, persistedState, applyMiddleware(promiseMiddleware()));
 
 store.subscribe(throttle(() => {
-  saveState(store.getState({ pets: store.getState().PetsReducer.pets }));
+  saveState(store.getState({
+    pets: store.getState().PetsReducer.pets,
+    petDetail: store.getState().PetsReducer.petDetail
+  }));
 }, 1000));
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppRoot />
+    <Router>
+      <AppRoot />
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

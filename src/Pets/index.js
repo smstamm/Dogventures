@@ -37,20 +37,20 @@ const styles = {
 class Pets extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    navigate: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     pets: PropTypes.array.isRequired,
     petsFetch: PropTypes.func.isRequired,
-    zip: PropTypes.string.isRequired
   };
 
   componentDidMount() {
     if (this.props.pets.length === 0) { // TODO also account for user manipulating URL
-      this.props.petsFetch(this.props.zip);
+      this.props.petsFetch(this.props.match.params.zip);
     }
   }
 
   petDetailsGet = petId => {
-    this.props.navigate(`/pets/${petId}`);
+    this.props.history.push(`/pets/${petId}`);
   }
 
   render() {

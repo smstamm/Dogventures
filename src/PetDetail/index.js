@@ -21,7 +21,7 @@ const select = (state, props) => {
   if (state.PetsReducer.pets.length > 0 && state.PetsReducer.pets.some(pet => pet.id === props.petId)) {
     return { pet: state.PetsReducer.pets.find(pet => pet.id === props.petId) };
   }
-  else if (state.PetsReducer.petDetail.id === props.petId) {
+  else if (state.PetsReducer.petDetail.id === props.match.params.petId) {
     return {pet: state.PetsReducer.petDetail};
   }
   else {
@@ -42,20 +42,20 @@ const styles = {
 class PetDetail extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     pet: PropTypes.object.isRequired,
-    petId: PropTypes.string.isRequired,
     petDetailFetch: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     if (Object.keys(this.props.pet).length === 0) {
-      this.props.petDetailFetch(this.props.petId);
+      this.props.petDetailFetch(this.props.match.params.petId);
     }
   }
 
   render() {
     const { pet } = this.props;
-    if (Object.keys(this.props.pet).length > 1) {
+    if (Object.keys(pet).length > 0) {
       return (
         <div>
           <Card>
@@ -106,7 +106,7 @@ class PetDetail extends Component {
       );
     }
     else {
-      return (<div>doggo details here</div>);
+      return <div>Doggos go here</div>;
     }
   }
 }

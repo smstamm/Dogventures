@@ -45,7 +45,7 @@ const muiStyles = () => ({
 class Home extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    navigate: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     petsFetch: PropTypes.func.isRequired
   };
 
@@ -62,7 +62,7 @@ class Home extends Component {
     if (this.zipValidate()) {
       this.props.petsFetch(this.state.zip)
         .then(() => {
-          this.props.navigate(`pets/zipcodes/${this.state.zip}`);
+          this.props.history.push(`pets/zipcodes/${this.state.zip}`);
         });
     }
   }
